@@ -209,6 +209,18 @@ try
 
     bool use_local_perm = param.getDefault("use_local_perm", true);
     Opm::DerivedGeology geology(*grid->c_grid(), *new_props, eclipseState, use_local_perm, grav);
+    if (eclipseState->hasDoubleGridProperty("TRANX")) {
+        geology.setTranx(*grid->c_grid(), eclipseState->getDoubleGridProperty("TRANX")->getData());
+    }
+    if (eclipseState->hasDoubleGridProperty("TRANY")) {
+        geology.setTrany(*grid->c_grid(), eclipseState->getDoubleGridProperty("TRANY")->getData());
+    }
+    if (eclipseState->hasDoubleGridProperty("TRANZ")) {
+        geology.setTranz(*grid->c_grid(), eclipseState->getDoubleGridProperty("TRANZ")->getData());
+    }
+    if (deck->hasKeyword("NNC")) {
+        geology.setNnc(*grid->c_grid(), deck->getKeyword("NNC"));
+    }
 
     std::vector<double> threshold_pressures = thresholdPressures(deck, eclipseState, *grid->c_grid());
 

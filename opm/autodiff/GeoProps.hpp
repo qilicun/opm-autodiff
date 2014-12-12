@@ -27,6 +27,7 @@
 #include <opm/core/pressure/tpfa/TransTpfa.hpp>
 
 #include <opm/parser/eclipse/EclipseState/EclipseState.hpp>
+#include <opm/parser/eclipse/Deck/DeckKeyword.hpp>
 
 #include <opm/core/utility/platform_dependent/disable_warnings.h>
 
@@ -165,6 +166,79 @@ namespace Opm
             }
         }
 
+        // TODO: variant of this method for Dune::CpGrid
+        void setTranx(const UnstructuredGrid& grid, const std::vector<double>& tranxValues)
+        {
+            setTran_(grid, tranxValues, /*axis=*/0);
+        }
+
+        // TODO: variant of this method for Dune::CpGrid
+        void setTrany(const UnstructuredGrid& grid, const std::vector<double>& tranyValues)
+        {
+            setTran_(grid, tranyValues, /*axis=*/1);
+        }
+
+        // TODO: variant of this method for Dune::CpGrid
+        void setTranz(const UnstructuredGrid& grid, const std::vector<double>& tranzValues)
+        {
+            setTran_(grid, tranzValues, /*axis=*/2);
+        }
+
+        // TODO: variant of this method for Dune::CpGrid
+        void setNnc(const UnstructuredGrid& grid, Opm::DeckKeywordConstPtr nncKeyword)
+        {
+            int nx = grid.cartdims[0];
+            int ny = grid.cartdims[1];
+            //int nz = grid.cartdims[2];
+
+            // create a map from a pair of cell indices to a transmissibility value.
+            std::map< std::pair<int, int>, double> faceToValueMap;
+            for (int recordIdx = 0; recordIdx < nncKeyword->size(); ++recordIdx) {
+                auto nncRecord = nncKeyword->getRecord(recordIdx);
+                int cellIdx1 =
+                    (nncRecord->getItem("I1")->getInt(0) - 1) +
+                    (nncRecord->getItem("J1")->getInt(0) - 1)*nx +
+                    (nncRecord->getItem("K1")->getInt(0) - 1)*nx*ny;
+                int cellIdx2 =
+                    (nncRecord->getItem("I2")->getInt(0) - 1) +
+                    (nncRecord->getItem("J2")->getInt(0) - 1)*nx +
+                    (nncRecord->getItem("K2")->getInt(0) - 1)*nx*ny;
+
+                double tranValue = nncRecord->getItem("TRAN")->getSIDouble(0);
+
+                std::pair<int, int> indices(cellIdx1, cellIdx2);
+                faceToValueMap[indices] = tranValue;
+            }
+
+            // iterate over all faces of the grid and apply the transmissibilities to
+            // those found in the map
+            for (int faceIdx = 0; faceIdx < grid.number_of_faces; ++faceIdx) {
+                int insideCellIdx = grid.face_cells[2*faceIdx + 0];
+                int outsideCellIdx = grid.face_cells[2*faceIdx + 0];
+
+                if (insideCellIdx < 0 || outsideCellIdx < 0) {
+                    // ignore boundary faces
+                    continue;
+                }
+
+                // retrieve the "uncompressed" cell indices
+                int insideCellCartesianIdx = insideCellIdx;
+                int outsideCellCartesianIdx = outsideCellIdx;
+                if (grid.global_cell) {
+                    insideCellCartesianIdx = grid.global_cell[insideCellIdx];
+                    outsideCellCartesianIdx = grid.global_cell[outsideCellIdx];
+                }
+
+                std::pair<int, int> indices(insideCellCartesianIdx, outsideCellCartesianIdx);
+                if (faceToValueMap.count(indices) == 0)
+                    indices = std::pair<int, int>(outsideCellCartesianIdx, insideCellCartesianIdx);
+                if (faceToValueMap.count(indices) == 0)
+                    continue; // face is not in the map
+
+                trans_[faceIdx] = faceToValueMap.at(indices);
+            }
+        }
+
         const Vector& poreVolume()       const { return pvol_   ;}
         const Vector& transmissibility() const { return trans_  ;}
         const Vector& gravityPotential() const { return gpot_   ;}
@@ -172,6 +246,93 @@ namespace Opm
         const double* gravity()          const { return gravity_;}
 
     private:
+        void assertLogicallyCartesianData_(const UnstructuredGrid& grid,
+                                           const std::vector<double>& tranxValues)
+        {
+            int nx = grid.cartdims[0];
+            int ny = grid.cartdims[1];
+            int nz = grid.cartdims[2];
+
+            if (tranxValues.size() != nx*ny*nz)
+                OPM_THROW(std::runtime_error,
+                          "The array of TRANX values must of size " << nx*ny*nz
+                          << "(is: " << tranxValues.size());
+        }
+
+        // TODO: variant of this method for Dune::CpGrid
+        void setTran_(const UnstructuredGrid& grid,
+                      const std::vector<double>& tranValues,
+                      int axis)
+        {
+            assertLogicallyCartesianData_(grid, tranValues);
+
+            for (int faceIdx = 0; faceIdx < grid.number_of_faces; ++faceIdx) {
+                int insideCellIdx = grid.face_cells[2*faceIdx + 0];
+                int outsideCellIdx = grid.face_cells[2*faceIdx + 0];
+
+                if (insideCellIdx < 0 || outsideCellIdx < 0) {
+                    // ignore boundary faces
+                    continue;
+                }
+
+                // retrieve the "uncompressed" cell indices
+                int insideCellCartesianIdx = insideCellIdx;
+                int outsideCellCartesianIdx = outsideCellIdx;
+                if (grid.global_cell) {
+                    insideCellCartesianIdx = grid.global_cell[insideCellIdx];
+                    outsideCellCartesianIdx = grid.global_cell[outsideCellIdx];
+                }
+
+                int neighborDir = neighborDirection_(grid,
+                                                     insideCellCartesianIdx,
+                                                     outsideCellCartesianIdx);
+                if (neighborDir == axis + 0) { // + direction face
+                    trans_[faceIdx] = tranValues[insideCellCartesianIdx];
+                }
+                else if (neighborDir == axis + 3) { // - direction face
+                    trans_[faceIdx] = tranValues[outsideCellCartesianIdx];
+                }
+            }
+        }
+
+        int neighborDirection_(const UnstructuredGrid& grid,
+                               const int insideCartesianIdx,
+                               const int outsideCartesianIdx) const
+        {
+            int nx = grid.cartdims[0];
+            int ny = grid.cartdims[1];
+            int nz = grid.cartdims[2];
+
+            int insideI = insideCartesianIdx%nx;
+            int insideJ = (insideCartesianIdx/nx)%ny;
+            int insideK = (insideCartesianIdx/nx/ny)%nz;
+
+            int outsideI = outsideCartesianIdx%nx;
+            int outsideJ = (outsideCartesianIdx/nx)%ny;
+            int outsideK = (outsideCartesianIdx/nx/ny)%nz;
+
+            if (insideJ == outsideJ && insideK == outsideK) {
+                if (insideI + 1 == outsideI)
+                    return 0; // +X direction
+                else if (insideI == outsideI + 1)
+                    return 3; // -X direction
+            }
+            else if (insideI == outsideI && insideK == outsideK) {
+                if (insideJ + 1 == outsideJ)
+                    return 1; // +Y direction
+                else if (insideJ == outsideJ + 1)
+                    return 4; // -Y direction
+            }
+            else if (insideI == outsideI && insideJ == outsideJ) {
+                if (insideK > outsideJ)
+                    return 2; // +Z direction
+                else
+                    return 6; // -Z direction
+            }
+
+            return -1; // non-neighboring connection
+        }
+
         template <class Grid>
         void multiplyHalfIntersections_(const Grid &grid,
                                         Opm::EclipseStateConstPtr eclState,
