@@ -236,6 +236,37 @@ namespace Opm
                     continue; // face is not in the map
 
                 trans_[faceIdx] = faceToValueMap.at(indices);
+                faceToValueMap[indices] = -1e100;
+            }
+
+            // print the NNCs which are not present in the grid but which have been
+            // specified by the NNC keyword...
+            auto nncIt = faceToValueMap.begin();
+            const auto& nncEndIt = faceToValueMap.end();
+            for (; nncIt != nncEndIt; ++ nncIt) {
+                if (nncIt->second < -1e50)
+                    continue;
+
+                int cartesianIdx1 = nncIt->first.first;
+                int cartesianIdx2 = nncIt->first.second;
+
+                int i1 = cartesianIdx1 % nx;
+                int j1 = cartesianIdx1/nx % ny;
+                int k1 = cartesianIdx1/(nx*ny);
+
+                int i2 = cartesianIdx2 % nx;
+                int j2 = cartesianIdx2/nx % ny;
+                int k2 = cartesianIdx2/(nx*ny);
+
+                std::cout << "No connection from cell ("
+                          << i1+1 << ", "
+                          << j1+1 << ", "
+                          << k1+1
+                          << ") to cell ("
+                          << i2+1 << ", "
+                          << j2+1 << ", "
+                          << k2+1
+                          << ") found in grid, but specified in the NNC keyword!\n";
             }
         }
 
