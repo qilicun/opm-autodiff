@@ -236,6 +236,13 @@ namespace Opm
                     continue; // face is not in the map
 
                 trans_[faceIdx] = faceToValueMap.at(indices);
+
+                // this is hacky, but the whole method is primarily intended as a
+                // debugging tool anyway...
+                if (faceToValueMap.at(indices) < -1e50) {
+                    std::cout << "Connection from cell " << insideCellCartesianIdx << " to cell "
+                              << outsideCellCartesianIdx << " appears more than once!\n";
+                }
                 faceToValueMap[indices] = -1e100;
             }
 
