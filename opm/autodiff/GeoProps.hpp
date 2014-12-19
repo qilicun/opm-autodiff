@@ -214,7 +214,7 @@ namespace Opm
             // those found in the map
             for (int faceIdx = 0; faceIdx < grid.number_of_faces; ++faceIdx) {
                 int insideCellIdx = grid.face_cells[2*faceIdx + 0];
-                int outsideCellIdx = grid.face_cells[2*faceIdx + 0];
+                int outsideCellIdx = grid.face_cells[2*faceIdx + 1];
 
                 if (insideCellIdx < 0 || outsideCellIdx < 0) {
                     // ignore boundary faces
@@ -268,7 +268,7 @@ namespace Opm
 
             for (int faceIdx = 0; faceIdx < grid.number_of_faces; ++faceIdx) {
                 int insideCellIdx = grid.face_cells[2*faceIdx + 0];
-                int outsideCellIdx = grid.face_cells[2*faceIdx + 0];
+                int outsideCellIdx = grid.face_cells[2*faceIdx + 1];
 
                 if (insideCellIdx < 0 || outsideCellIdx < 0) {
                     // ignore boundary faces
