@@ -324,11 +324,16 @@ namespace Opm
                 int neighborDir = neighborDirection_(grid,
                                                      insideCellCartesianIdx,
                                                      outsideCellCartesianIdx);
+
                 if (neighborDir == axis + 0) { // + direction face
-                    trans_[faceIdx] = tranValues[insideCellCartesianIdx];
+                    if (std::isfinite(tranValues[insideCellCartesianIdx])) {
+                        trans_[faceIdx] = tranValues[insideCellCartesianIdx];
+                    }
                 }
                 else if (neighborDir == axis + 3) { // - direction face
-                    trans_[faceIdx] = tranValues[outsideCellCartesianIdx];
+                    if (std::isfinite(tranValues[outsideCellCartesianIdx])) {
+                        trans_[faceIdx] = tranValues[outsideCellCartesianIdx];
+                    }
                 }
             }
         }
