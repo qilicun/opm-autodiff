@@ -199,6 +199,52 @@ namespace Opm
             std::copy(d.begin(), d.end(), std::ostream_iterator<double>(file, "\n"));
         }
     }
+    static void outputPoreVolumeMatlab(const DerivedGeology& geo,
+                                       const int step,
+                                       const std::string& output_dir)
+    {
+
+        // Write data (not grid) in Matlab format
+       std::ostringstream fname;
+       fname << output_dir << "/" << "poreVolume";
+       boost::filesystem::path fpath = fname.str();
+       try {
+           create_directories(fpath);
+       }
+       catch (...) {
+           OPM_THROW(std::runtime_error,"Creating directories failed: " << fpath);
+       }
+       fname << "/" << std::setw(3) << std::setfill('0') << step << ".txt";
+       std::ofstream file(fname.str().c_str());
+       if (!file) {
+           OPM_THROW(std::runtime_error,"Failed to open " << fname.str());
+       }
+       file.precision(15);
+       std::copy(&geo.poreVolume()[0],&geo.poreVolume()[0]+geo.poreVolume().size(), std::ostream_iterator<double>(file, "\n"));
+    }
+    static void outputTransMatlab(const DerivedGeology& geo,
+                                  const int step,
+                                  const std::string& output_dir)
+    {
+
+        // Write data (not grid) in Matlab format
+       std::ostringstream fname;
+       fname << output_dir << "/" << "transmissibility";
+       boost::filesystem::path fpath = fname.str();
+       try {
+           create_directories(fpath);
+       }
+       catch (...) {
+           OPM_THROW(std::runtime_error,"Creating directories failed: " << fpath);
+       }
+       fname << "/" << std::setw(3) << std::setfill('0') << step << ".txt";
+       std::ofstream file(fname.str().c_str());
+       if (!file) {
+           OPM_THROW(std::runtime_error,"Failed to open " << fname.str());
+       }
+       file.precision(15);
+       std::copy(&geo.transmissibility()[0],&geo.transmissibility()[0]+geo.transmissibility().size(), std::ostream_iterator<double>(file, "\n"));
+    }
 
 #if 0
     static void outputWaterCut(const Opm::Watercut& watercut,
@@ -336,6 +382,8 @@ namespace Opm
                 if (output_matlab_) {
                     outputStateMatlab(grid_, state, timer.currentStepNum(), output_dir_);
                     outputWellStateMatlab(well_state,timer.currentStepNum(), output_dir_);
+                    outputPoreVolumeMatlab(geo_,timer.currentStepNum(), output_dir_);
+                    outputTransMatlab(geo_,timer.currentStepNum(), output_dir_);
                 }
             }
             if (output_) {
