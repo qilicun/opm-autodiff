@@ -78,7 +78,28 @@ namespace Opm
                 cartDims[0]
                 * cartDims[1]
                 * cartDims[2];
+            
+            //output grid information.
+            std::cout << "num cells: " << numCells << " , num cart cells "<<numCartesianCells << "  cartDims: "
+                      << cartDims[0] << ", "<<cartDims[1] << ", " << cartDims[2] << std::endl;
+            // output the cell index.
+            //            std::cout << "global cell index:" << std::endl;
+            // for (int i = 0; i < numCells; ++i) {
+            //     std::cout << AutoDiffGrid::globalCell(grid)[i] << std::endl;
+            //         }
+            // output cartesian cell index.
+            for (int cell = 0; cell < numCells; ++cell) {
+                int nx = cartDims[0];
+                int ny = cartDims[1];
+                int nz = cartDims[2];
+                int cartIndex = AutoDiffGrid::globalCell(grid)[cell];
+                int i = cartIndex% nx;
+                int j = cartIndex/nx % ny;
+                int k = cartIndex/(nx*ny) % nz;
+                std::cout << i << "    " << j << "    " << k << std::endl;
 
+            }
+            exit(1);
             // get the pore volume multipliers from the EclipseState
             std::vector<double> multpv(numCartesianCells, 1.0);
             if (eclState->hasDoubleGridProperty("MULTPV")) {
