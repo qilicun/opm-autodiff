@@ -156,6 +156,35 @@ namespace Opm
         }
     }
 
+    void outputTransMatlab(const Trans& trans,
+                           const std::string& output_dir)
+    {
+        Opm::DataMap dm;
+        dm["trans"] = &trans.transmissibility();
+        dm["htrans"] = &trans.htrans();
+        // Write data (not grid) in Matlab format
+        for (Opm::DataMap::const_iterator it = dm.begin(); it != dm.end(); ++it) {
+            std::ostringstream fname;
+            fname << output_dir << "/" << it->first;
+            boost::filesystem::path fpath = fname.str();
+            try {
+                create_directories(fpath);
+            }
+            catch (...) {
+                OPM_THROW(std::runtime_error,"Creating directories failed: " << fpath);
+            }
+            fname << "/" << std::setw(3) << std::setfill('0') << "0" << ".txt";
+            std::ofstream file(fname.str().c_str());
+            if (!file) {
+                OPM_THROW(std::runtime_error,"Failed to open " << fname.str());
+            }
+            file.precision(15);
+            const std::vector<double>& d = *(it->second);
+            std::copy(d.begin(), d.end(), std::ostream_iterator<double>(file, "\n"));
+        }
+    }
+
+
 #if 0
     void outputWaterCut(const Opm::Watercut& watercut,
                         const std::string& output_dir)

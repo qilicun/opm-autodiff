@@ -61,6 +61,10 @@ namespace Opm
     void outputWellStateMatlab(const Opm::WellState& well_state,
                                const int step,
                                const std::string& output_dir);
+
+    void outputTransMatlab(const Trans& trans,
+                           const std::string& output_dir)
+
 #ifdef HAVE_DUNE_CORNERPOINT
     void outputStateVtk(const Dune::CpGrid& grid,
                         const Opm::SimulatorState& state,
