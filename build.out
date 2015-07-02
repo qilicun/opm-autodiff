@@ -1,0 +1,370 @@
+
+-----------------------------------------------------------------
+PWD: /project/eor/user/liuming/opm/opm-autodiff/build 
+/project/res/x86_64_RH_5/bin/cmake /project/eor/user/liuming/opm/opm-autodiff\ 
+ -DDUNE_ROOT=/project/res/x86_64_RH_5/share/opm/dune-2.3 \ 
+ -DSUPERLU_ROOT=/project/res/x86_64_RH_5/share/opm/SuperLU_4.0 \ 
+ -DBOOST_ROOT=/project/res/x86_64_RH_5/share/opm/boost \ 
+ -DSUITESPARSE_ROOT=/project/res/x86_64_RH_5/share/opm/SuiteSparse \ 
+ -DSUITESPARSE_STATIC=ON \ 
+ -DEIGEN3_ROOT=/project/res/x86_64_RH_5/share/opm/Eigen3/Eigen3 \ 
+ -DOPM_CMAKE_ROOT=/project/res/share/opm \ 
+ -DERT_ROOT=/project/res/x86_64_RH_5/share/opm/ert \ 
+ -DCMAKE_C_COMPILER=gcc44 \ 
+ -DCMAKE_CXX_COMPILER=g++44 \ 
+ -DCMAKE_Fortran_COMPILER=gfortran44 \ 
+ -DCMAKE_BUILD_TYPE=DEBUG 
+-----------------------------------------------------------------
+-- The C compiler identification is GNU 4.4.7
+-- The CXX compiler identification is GNU 4.4.7
+-- Check for working C compiler: /usr/bin/gcc44
+-- Check for working C compiler: /usr/bin/gcc44 -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++44
+-- Check for working CXX compiler: /usr/bin/g++44 -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- CMake version: 2.8.12.2
+-- Linux distribution: Red Hat Enterprise Linux Client release 5.8 (Tikanga)
+-- Target architecture: x86_64
+-- Found Git: /prog/sdpsoft/bin/git (found version "2.4.0") 
+-- Source code repository: git dece1fc%
+-- GNU C++ compiler version: 4.4.7
+-- Linker: ld 2.17.50.0.6-20.el5
+-- Checking to see if CXX compiler accepts flag -Wl,--enable-new-dtags
+-- Checking to see if CXX compiler accepts flag -Wl,--enable-new-dtags - yes
+-- Precompiled headers: disabled
+-- Build type: DEBUG
+-- Checking to see if CXX compiler accepts flag -mtune=native
+-- Checking to see if CXX compiler accepts flag -mtune=native - yes
+-- All warnings enabled: -Wall
+-- OpenMP: disabled
+-- Finding package C99 using module mode
+-- Performing Test HAVE_C99
+-- Performing Test HAVE_C99 - Success
+-- Found C99: -std=c99  
+-- Finding package CXX11Features using module mode
+-- Checking to see if CXX compiler accepts flag -std=c++11
+-- Checking to see if CXX compiler accepts flag -std=c++11 - no
+-- Checking to see if CXX compiler accepts flag -std=c++0x
+-- Checking to see if CXX compiler accepts flag -std=c++0x - yes
+-- Performing Test HAVE_FINAL
+-- Performing Test HAVE_FINAL - Failed
+-- Performing Test HAVE_TYPE_TRAITS
+-- Performing Test HAVE_TYPE_TRAITS - Success
+-- Performing Test HAVE_SHARED_PTR
+-- Performing Test HAVE_SHARED_PTR - Success
+-- Performing Test HAVE_UNIQUE_PTR
+-- Performing Test HAVE_UNIQUE_PTR - Success
+-- Performing Test HAVE_NULLPTR
+-- Performing Test HAVE_NULLPTR - Failed
+-- Performing Test HAVE_REGEX
+-- Performing Test HAVE_REGEX - Failed
+-- Performing Test HAVE_CONSTEXPR
+-- Performing Test HAVE_CONSTEXPR - Failed
+-- Performing Test HAVE_ARRAY
+-- Performing Test HAVE_ARRAY - Success
+-- Performing Test HAVE_INTEGRAL_CONSTANT
+-- Performing Test HAVE_INTEGRAL_CONSTANT - Failed
+-- Looking for C++ include tuple
+-- Looking for C++ include tuple - found
+-- Looking for C++ include tr1/tuple
+-- Looking for C++ include tr1/tuple - found
+-- Performing Test HAVE_ATTRIBUTE_ALWAYS_INLINE
+-- Performing Test HAVE_ATTRIBUTE_ALWAYS_INLINE - Success
+-- Performing Test HAS_ATTRIBUTE_UNUSED
+-- Performing Test HAS_ATTRIBUTE_UNUSED - Success
+-- Performing Test HAS_ATTRIBUTE_DEPRECATED
+-- Performing Test HAS_ATTRIBUTE_DEPRECATED - Success
+-- Performing Test HAS_ATTRIBUTE_DEPRECATED_MSG
+-- Performing Test HAS_ATTRIBUTE_DEPRECATED_MSG - Failed
+-- Performing Test HAVE_STATIC_ASSERT
+-- Performing Test HAVE_STATIC_ASSERT - Success
+-- Performing Test HAVE_AUTO
+-- Performing Test HAVE_AUTO - Success
+-- Performing Test HAVE_VARIADIC_TEMPLATES
+-- Performing Test HAVE_VARIADIC_TEMPLATES - Success
+-- Performing Test HAVE_VARIADIC_CONSTRUCTOR_SFINAE
+-- Performing Test HAVE_VARIADIC_CONSTRUCTOR_SFINAE - Success
+-- Performing Test HAVE_RVALUE_REFERENCES
+-- Performing Test HAVE_RVALUE_REFERENCES - Success
+-- Looking for C++ include tr1/type_traits
+-- Looking for C++ include tr1/type_traits - found
+-- Finding package Boost using module mode
+-- Boost version: 1.45.0
+-- Found the following Boost libraries:
+--   date_time
+--   filesystem
+--   system
+--   iostreams
+--   unit_test_framework
+-- Finding package dune-common using module mode
+-- Found PkgConfig: /project/res/x86_64_RH_5/bin/pkg-config (found version "0.28") 
+-- Finding package BLAS using module mode
+-- Looking for sgemm_
+-- Looking for sgemm_ - found
+-- Looking for include file pthread.h
+-- Looking for include file pthread.h - found
+-- Looking for pthread_create
+-- Looking for pthread_create - not found
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE  
+-- A library with BLAS API found.
+-- Finding package LAPACK using module mode
+-- A library with BLAS API found.
+-- Looking for cheev_
+-- Looking for cheev_ - found
+-- A library with LAPACK API found.
+-- Finding package CxaDemangle using module mode
+-- Performing Test HAVE_CXA_DEMANGLE
+-- Performing Test HAVE_CXA_DEMANGLE - Success
+-- Performing Test HAVE_DUNE_COMMON
+-- Performing Test HAVE_DUNE_COMMON - Success
+-- Found dune-common: /project/res/x86_64_RH_5/share/opm/dune-2.3/include  
+-- Version 2.3.1 of dune-common from /project/res/x86_64_RH_5/share/opm/dune-2.3/lib/dunecontrol/dune-common/dune.module
+-- Finding package dune-istl using module mode
+-- Finding package SuperLU using module mode
+-- Performing Test HAVE_MEM_USAGE_T_EXPANSIONS
+-- Performing Test HAVE_MEM_USAGE_T_EXPANSIONS - Failed
+-- Performing Test SUPERLU_MIN_VERSION_4_3
+-- Performing Test SUPERLU_MIN_VERSION_4_3 - Failed
+-- Performing Test SUPERLU_POST_2005_VERSION
+-- Performing Test SUPERLU_POST_2005_VERSION - Success
+-- Found SuperLU: /project/res/x86_64_RH_5/share/opm/SuperLU_4.0/SRC  
+-- Finding package SuiteSparse using module mode
+-- Performing Test HAVE_UMFPACK_WITHOUT_CHOLMOD
+-- Performing Test HAVE_UMFPACK_WITHOUT_CHOLMOD - Failed
+-- Performing Test HAVE_UMFPACK_WITH_CHOLMOD
+-- Performing Test HAVE_UMFPACK_WITH_CHOLMOD - Success
+-- Found SuiteSparse: /project/res/x86_64_RH_5/share/opm/SuiteSparse/lib/libumfpack.a;/project/res/x86_64_RH_5/share/opm/SuiteSparse/lib/libcholmod.a;/project/res/x86_64_RH_5/share/opm/SuiteSparse/lib/libamd.a;/project/res/x86_64_RH_5/share/opm/SuiteSparse/lib/libcolamd.a;/project/res/x86_64_RH_5/share/opm/SuiteSparse/lib/libcamd.a  
+-- Performing Test HAVE_DUNE_ISTL
+-- Performing Test HAVE_DUNE_ISTL - Success
+-- Found dune-istl: /project/res/x86_64_RH_5/share/opm/dune-2.3/include  
+-- Version 2.3.1 of dune-istl from /project/res/x86_64_RH_5/share/opm/dune-2.3/lib/dunecontrol/dune-istl/dune.module
+-- Finding package dune-cornerpoint using module mode
+-- Finding package dune-grid using module mode
+-- Finding package dune-geometry using module mode
+-- Performing Test HAVE_DUNE_GEOMETRY
+-- Performing Test HAVE_DUNE_GEOMETRY - Success
+-- Found dune-geometry: /project/res/x86_64_RH_5/share/opm/dune-2.3/include  
+-- Version 2.3.1 of dune-geometry from /project/res/x86_64_RH_5/share/opm/dune-2.3/lib/dunecontrol/dune-geometry/dune.module
+-- Finding package ALUGrid using module mode
+-- Could not find ALUGrid.
+-- Could not find ALUGrid
+-- Finding package UG using module mode
+-- Could not find UG. It seems to be not installed.
+-- Performing Test HAVE_DUNE_GRID
+-- Performing Test HAVE_DUNE_GRID - Success
+-- Found dune-grid: /project/res/x86_64_RH_5/share/opm/dune-2.3/include  
+-- Version 2.3.1 of dune-grid from /project/res/x86_64_RH_5/share/opm/dune-2.3/lib/dunecontrol/dune-grid/dune.module
+-- Finding package opm-core using module mode
+-- Finding package TinyXML using module mode
+-- Failed to find library "tinyxml" for module TinyXML
+-- Performing Test HAVE_TINYXML
+-- Performing Test HAVE_TINYXML - Failed
+-- Could NOT find TinyXML (missing:  TinyXML_INCLUDE_DIR TinyXML_LIBRARY HAVE_TINYXML) 
+-- Finding package ERT using module mode
+-- Looking for isfinite
+-- Looking for isfinite - found
+-- Looking for glob
+-- Looking for glob - found
+-- Looking for fork
+-- Looking for fork - found
+-- Looking for getuid
+-- Looking for getuid - found
+-- Looking for lockf
+-- Looking for lockf - found
+-- Looking for opendir
+-- Looking for opendir - found
+-- Looking for readlinkat
+-- Looking for readlinkat - found
+-- Looking for symlink
+-- Looking for symlink - found
+-- Looking for va_copy
+-- Looking for va_copy - found
+-- OpenMP: disabled
+-- Found ZLIB: /usr/lib64/libz.so (found version "1.2.3") 
+-- A library with BLAS API found.
+-- A library with BLAS API found.
+-- A library with LAPACK API found.
+-- Performing Test HAVE_ERT
+-- Performing Test HAVE_ERT - Success
+-- Found ERT: /project/res/x86_64_RH_5/share/opm/ert/include;/project/res/x86_64_RH_5/share/opm/ert/include;/project/res/x86_64_RH_5/share/opm/ert/include;/project/res/x86_64_RH_5/share/opm/ert/include;/project/res/x86_64_RH_5/share/opm/ert/include  
+-- Finding package PETSc using module mode
+-- A library with BLAS API found.
+-- Looking for XOpenDisplay in /usr/lib64/libX11.so;/usr/lib64/libXext.so
+-- Looking for XOpenDisplay in /usr/lib64/libX11.so;/usr/lib64/libXext.so - found
+-- Looking for gethostbyname
+-- Looking for gethostbyname - found
+-- Looking for connect
+-- Looking for connect - found
+-- Looking for remove
+-- Looking for remove - found
+-- Looking for shmat
+-- Looking for shmat - found
+-- Looking for IceConnectionNumber in ICE
+-- Looking for IceConnectionNumber in ICE - found
+-- Could not find a system provided MPI. Searching for PETSc provided mpiuni fallback implementation.
+CMake Warning at /project/res/share/opm/cmake/Modules/FindPETSc.cmake:99 (message):
+  Could not find any MPI implementation.  If PETSc is compiled with
+  --with-mpi=0 this is ok.  Otherwise you will get linker errors or (possibly
+  subtle) runtime errors.  Continuing.
+Call Stack (most recent call first):
+  /project/res/share/opm/cmake/Modules/OpmFind.cmake:147 (find_package)
+  /project/res/share/opm/cmake/Modules/OpmPackage.cmake:269 (find_and_append_package_to)
+  /project/res/share/opm/cmake/Modules/Findopm-core.cmake:16 (find_opm_package)
+  /project/res/share/opm/cmake/Modules/OpmFind.cmake:147 (find_package)
+  /project/res/share/opm/cmake/Modules/OpmPackage.cmake:269 (find_and_append_package_to)
+  /project/res/share/opm/cmake/Modules/Finddune-cornerpoint.cmake:15 (find_opm_package)
+  /project/res/share/opm/cmake/Modules/OpmFind.cmake:147 (find_package)
+  /project/res/share/opm/cmake/Modules/OpmFind.cmake:211 (find_and_append_package_to)
+  /project/res/share/opm/cmake/Modules/OpmLibMain.cmake:104 (find_and_append_package_list_to)
+  CMakeLists.txt:101 (include)
+
+
+To build with MPI support, pass -DUSE_MPI=ON to CMake.
+-- Could not find the PETSc library
+-- Finding package opm-parser using module mode
+-- Boost version: 1.45.0
+-- Found the following Boost libraries:
+--   filesystem
+--   date_time
+--   system
+--   unit_test_framework
+--   regex
+-- Performing Test HAVE_OPM_PARSER
+-- Performing Test HAVE_OPM_PARSER - Success
+-- Found opm-parser: /project/eor/user/liuming/opm/opm-parser;/project/eor/user/liuming/opm/opm-parser/build/generated-source/include;/project/res/x86_64_RH_5/share/opm/boost/include;/project/res/x86_64_RH_5/share/opm/ert/include;/usr/include  
+-- Performing Test HAVE_OPM_CORE
+-- Performing Test HAVE_OPM_CORE - Success
+-- Found opm-core: /project/eor/user/liuming/opm/opm-core  
+-- Performing Test HAVE_DYNAMIC_BOOST_TEST
+-- Performing Test HAVE_DYNAMIC_BOOST_TEST - Success
+-- Finding package ZOLTAN using module mode
+-- Could NOT find PTScotch (missing:  PTSCOTCH_INCLUDE_DIR PTSCOTCH_LIBRARY PTSCOTCHERR_LIBRARY) 
+-- Could NOT find ZOLTAN (missing:  ZOLTAN_LIBRARIES ZOLTAN_INCLUDE_DIRS) 
+-- Performing Test HAVE_DUNE_CORNERPOINT
+-- Performing Test HAVE_DUNE_CORNERPOINT - Success
+-- Found dune-cornerpoint: /project/eor/user/liuming/opm/dune-cornerpoint  
+-- Finding package Eigen3 using module mode
+-- Found Eigen3: /project/res/x86_64_RH_5/share/opm/Eigen3/Eigen3/include/eigen3 (Required is at least version "3.2.0") 
+-- Generating debug symbols: -ggdb3
+-- Looking for strip utility
+-- Looking for strip utility - found
+-- Writing config file "/project/eor/user/liuming/opm/opm-autodiff/build/config.h"...
+-- This build defaults to installing in /usr/local
+-- Found Doxygen: /project/res/x86_64_RH_5/bin/doxygen (found version "1.5.5") 
+-- Libtool not found!
+-- Configuring done
+-- Generating done
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_Fortran_COMPILER
+    SUITESPARSE_STATIC
+
+
+-- Build files have been written to: /project/eor/user/liuming/opm/opm-autodiff/build
+
+-----------------------------------------------------------------
+Compiling with: make -j 4
+-----------------------------------------------------------------
+Scanning dependencies of target dune-compat
+Scanning dependencies of target datafiles
+[  6%] [  6%] Patching Makefile to be DUNE compatible
+Generating tests/fluid.data
+[  9%] [  9%] Making "tests" data available in output tree
+Built target dune-compat
+[  9%] Built target datafiles
+Scanning dependencies of target opmautodiff
+[ 12%] [ 16%] Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/BlackoilPropsAdInterface.cpp.o
+Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/ExtractParallelGridInformationToISTL.cpp.o
+[ 22%] [ 22%] Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/NewtonIterationBlackoilSimple.cpp.o
+Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/NewtonIterationBlackoilCPR.cpp.o
+[ 25%] Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/GridHelpers.cpp.o
+[ 29%] Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/ImpesTPFAAD.cpp.o
+In file included from /project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/ImpesTPFAAD.hpp:25,
+                 from /project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/ImpesTPFAAD.cpp:21:
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp: In constructor 'Opm::UpwindSelector<Scalar>::UpwindSelector(const Grid&, const Opm::HelperOps&, const typename Opm::AutoDiffBlock<Scalar>::V&) [with Grid = UnstructuredGrid, Scalar = double]':
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/ImpesTPFAAD.cpp:369:   instantiated from here
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp:239: warning: comparison between signed and unsigned integer expressions
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp:257: warning: comparison between signed and unsigned integer expressions
+[ 32%] Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/SimulatorFullyImplicitBlackoilOutput.cpp.o
+[ 35%] Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/SimulatorIncompTwophaseAd.cpp.o
+[ 38%] Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/TransportSolverTwophaseAd.cpp.o
+[ 41%] Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/BlackoilPropsAdFromDeck.cpp.o
+In file included from /project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/TransportSolverTwophaseAd.hpp:24,
+                 from /project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/TransportSolverTwophaseAd.cpp:22:
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp: In constructor 'Opm::UpwindSelector<Scalar>::UpwindSelector(const Grid&, const Opm::HelperOps&, const typename Opm::AutoDiffBlock<Scalar>::V&) [with Grid = UnstructuredGrid, Scalar = double]':
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/TransportSolverTwophaseAd.cpp:195:   instantiated from here
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp:239: warning: comparison between signed and unsigned integer expressions
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp:257: warning: comparison between signed and unsigned integer expressions
+[ 45%] Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/BlackoilModelParameters.cpp.o
+[ 48%] Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/WellDensitySegmented.cpp.o
+[ 51%] Building CXX object CMakeFiles/opmautodiff.dir/opm/autodiff/LinearisedBlackoilResidual.cpp.o
+Linking CXX static library lib/libopmautodiff.a
+[ 51%] Built target opmautodiff
+Scanning dependencies of target find_zero
+[ 54%] Building CXX object CMakeFiles/find_zero.dir/examples/find_zero.cpp.o
+Linking CXX executable bin/find_zero
+Scanning dependencies of target sim_2p_incomp_ad
+[ 54%] Built target find_zero
+[ 58%] Building CXX object CMakeFiles/sim_2p_incomp_ad.dir/examples/sim_2p_incomp_ad.cpp.o
+Scanning dependencies of target flow_cp
+Scanning dependencies of target flow
+[ 64%] [ 64%] Building CXX object CMakeFiles/flow_cp.dir/examples/flow_cp.cpp.o
+Building CXX object CMakeFiles/flow.dir/examples/flow.cpp.o
+Scanning dependencies of target opm_init_check
+[ 67%] Building CXX object CMakeFiles/opm_init_check.dir/examples/opm_init_check.cpp.o
+Linking CXX executable bin/sim_2p_incomp_ad
+In file included from /project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/BlackoilModelBase.hpp:29,
+                 from /project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/BlackoilModel.hpp:26,
+                 from /project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/SimulatorBase.hpp:30,
+                 from /project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/SimulatorFullyImplicitBlackoil.hpp:24,
+                 from /project/eor/user/liuming/opm/opm-autodiff/examples/flow_cp.cpp:69:
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp: In constructor 'Opm::HelperOps::HelperOps(const Grid&, Opm::EclipseStateConstPtr) [with Grid = Dune::CpGrid]':
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/BlackoilModelBase_impl.hpp:175:   instantiated from 'Opm::BlackoilModelBase<Grid, Implementation>::BlackoilModelBase(const typename Opm::ModelTraits<Implementation>::ModelParameters&, const Grid&, const Opm::BlackoilPropsAdInterface&, const Opm::DerivedGeology&, const Opm::RockCompressibility*, const Wells*, const Opm::NewtonIterationBlackoilInterface&, Opm::EclipseStateConstPtr, bool, bool, bool) [with Grid = Dune::CpGrid, Implementation = Opm::BlackoilModel<Dune::CpGrid>]'
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/BlackoilModel.hpp:74:   instantiated from 'Opm::BlackoilModel<Grid>::BlackoilModel(const typename Opm::BlackoilModelBase<Grid, Opm::BlackoilModel<Grid> >::ModelParameters&, const Grid&, const Opm::BlackoilPropsAdInterface&, const Opm::DerivedGeology&, const Opm::RockCompressibility*, const Wells*, const Opm::NewtonIterationBlackoilInterface&, Opm::EclipseStateConstPtr, bool, bool, bool) [with Grid = Dune::CpGrid]'
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/SimulatorBase_impl.hpp:347:   instantiated from 'std::unique_ptr<typename Opm::SimulatorTraits<Implementation>::Solver, std::default_delete<typename Opm::SimulatorTraits<Implementation>::Solver> > Opm::SimulatorBase<Implementation>::createSolver(const Wells*) [with Implementation = Opm::SimulatorFullyImplicitBlackoil<Dune::CpGrid>]'
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/SimulatorBase_impl.hpp:153:   instantiated from 'Opm::SimulatorReport Opm::SimulatorBase<Implementation>::run(Opm::SimulatorTimer&, typename Opm::SimulatorTraits<Implementation>::ReservoirState&) [with Implementation = Opm::SimulatorFullyImplicitBlackoil<Dune::CpGrid>]'
+/project/eor/user/liuming/opm/opm-autodiff/examples/flow_cp.cpp:369:   instantiated from here
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp:98: error: 'const class Dune::CpGrid' has no member named 'global_cell'
+In file included from /project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/BlackoilModelBase.hpp:29,
+                 from /project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/BlackoilModel.hpp:26,
+                 from /project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/SimulatorBase.hpp:30,
+                 from /project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/SimulatorFullyImplicitBlackoil.hpp:24,
+                 from /project/eor/user/liuming/opm/opm-autodiff/examples/flow.cpp:47:
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp: In constructor 'Opm::UpwindSelector<Scalar>::UpwindSelector(const Grid&, const Opm::HelperOps&, const typename Opm::AutoDiffBlock<Scalar>::V&) [with Grid = UnstructuredGrid, Scalar = double]':
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/BlackoilModelBase_impl.hpp:779:   instantiated from 'void Opm::BlackoilModelBase<Grid, Implementation>::assembleMassBalanceEq(const typename Opm::ModelTraits<Implementation>::SolutionState&) [with Grid = UnstructuredGrid, Implementation = Opm::BlackoilModel<UnstructuredGrid>]'
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/BlackoilModelBase_impl.hpp:728:   instantiated from 'void Opm::BlackoilModelBase<Grid, Implementation>::assemble(const typename Opm::ModelTraits<Implementation>::ReservoirState&, typename Opm::ModelTraits<Implementation>::WellState&, bool) [with Grid = UnstructuredGrid, Implementation = Opm::BlackoilModel<UnstructuredGrid>]'
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/NewtonSolver_impl.hpp:68:   instantiated from 'int Opm::NewtonSolver<PhysicalModel>::step(double, typename PhysicalModel::ReservoirState&, typename PhysicalModel::WellState&) [with PhysicalModel = Opm::BlackoilModel<UnstructuredGrid>]'
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/SimulatorBase_impl.hpp:165:   instantiated from 'Opm::SimulatorReport Opm::SimulatorBase<Implementation>::run(Opm::SimulatorTimer&, typename Opm::SimulatorTraits<Implementation>::ReservoirState&) [with Implementation = Opm::SimulatorFullyImplicitBlackoil<UnstructuredGrid>]'
+/project/eor/user/liuming/opm/opm-autodiff/examples/flow.cpp:268:   instantiated from here
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp:239: warning: comparison between signed and unsigned integer expressions
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp:257: warning: comparison between signed and unsigned integer expressions
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp: In constructor 'Opm::UpwindSelector<Scalar>::UpwindSelector(const Grid&, const Opm::HelperOps&, const typename Opm::AutoDiffBlock<Scalar>::V&) [with Grid = Dune::CpGrid, Scalar = double]':
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/BlackoilModelBase_impl.hpp:779:   instantiated from 'void Opm::BlackoilModelBase<Grid, Implementation>::assembleMassBalanceEq(const typename Opm::ModelTraits<Implementation>::SolutionState&) [with Grid = Dune::CpGrid, Implementation = Opm::BlackoilModel<Dune::CpGrid>]'
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/BlackoilModelBase_impl.hpp:728:   instantiated from 'void Opm::BlackoilModelBase<Grid, Implementation>::assemble(const typename Opm::ModelTraits<Implementation>::ReservoirState&, typename Opm::ModelTraits<Implementation>::WellState&, bool) [with Grid = Dune::CpGrid, Implementation = Opm::BlackoilModel<Dune::CpGrid>]'
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/NewtonSolver_impl.hpp:68:   instantiated from 'int Opm::NewtonSolver<PhysicalModel>::step(double, typename PhysicalModel::ReservoirState&, typename PhysicalModel::WellState&) [with PhysicalModel = Opm::BlackoilModel<Dune::CpGrid>]'
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/SimulatorBase_impl.hpp:165:   instantiated from 'Opm::SimulatorReport Opm::SimulatorBase<Implementation>::run(Opm::SimulatorTimer&, typename Opm::SimulatorTraits<Implementation>::ReservoirState&) [with Implementation = Opm::SimulatorFullyImplicitBlackoil<Dune::CpGrid>]'
+/project/eor/user/liuming/opm/opm-autodiff/examples/flow_cp.cpp:369:   instantiated from here
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp:239: warning: comparison between signed and unsigned integer expressions
+/project/eor/user/liuming/opm/opm-autodiff/opm/autodiff/AutoDiffHelpers.hpp:257: warning: comparison between signed and unsigned integer expressions
+/project/eor/user/liuming/opm/opm-core/opm/core/utility/Units.hpp: At global scope:
+/project/eor/user/liuming/opm/opm-core/opm/core/utility/Units.hpp:103: warning: 'Opm::unit::stb' defined but not used
+/project/eor/user/liuming/opm/opm-core/opm/core/utility/Units.hpp:104: warning: 'Opm::unit::liter' defined but not used
+/project/eor/user/liuming/opm/opm-core/opm/core/utility/Units.hpp:138: warning: 'Opm::unit::psia' defined but not used
+/project/eor/user/liuming/opm/opm-core/opm/core/utility/Units.hpp:166: warning: 'Opm::unit::darcy' defined but not used
+/project/res/x86_64_RH_5/share/opm/boost/include/boost/system/error_code.hpp:214: warning: 'boost::system::posix_category' defined but not used
+/project/res/x86_64_RH_5/share/opm/boost/include/boost/system/error_code.hpp:215: warning: 'boost::system::errno_ecat' defined but not used
+/project/res/x86_64_RH_5/share/opm/boost/include/boost/system/error_code.hpp:216: warning: 'boost::system::native_ecat' defined but not used
+make[2]: *** [CMakeFiles/flow_cp.dir/examples/flow_cp.cpp.o] Error 1
+make[1]: *** [CMakeFiles/flow_cp.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+Linking CXX executable bin/opm_init_check
+Linking CXX executable bin/flow
+[ 67%] Built target sim_2p_incomp_ad

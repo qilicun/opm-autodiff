@@ -17,8 +17,8 @@
   along with OPM.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef OPM_GEOPROPS_HEADER_INCLUDED
-#define OPM_GEOPROPS_HEADER_INCLUDED
+#ifndef OPM_TRANS_HEADER_INCLUDED
+#define OPM_TRANS_HEADER_INCLUDED
 
 #include <opm/core/grid.h>
 #include <opm/autodiff/GridHelpers.hpp>
@@ -59,7 +59,7 @@ namespace Opm
         Trans(const Grid&              grid,
               const Props&             props ,
               Opm::EclipseStateConstPtr eclState)
-            : htrans_ (AutoDiffGrid::numCellFaces(grid))
+            : htrans_(AutoDiffGrid::numCellFaces(grid))
             , trans_(Opm::AutoDiffGrid::numFaces(grid))
         {
             int numCells = AutoDiffGrid::numCells(grid);
@@ -87,7 +87,7 @@ namespace Opm
             //                tpfa_htrans_compute(ug, props.permeability(), htrans.data());
                 //            }
                 //            else {
-                tpfa_loc_trans_compute_(grid,props.permeability(),htrans_);
+            tpfa_loc_trans_compute_(grid,props.permeability(),htrans_);
                 //            }
 
             std::vector<double> mult;
@@ -102,7 +102,7 @@ namespace Opm
             for (int faceIdx = 0; faceIdx < numFaces; faceIdx++) {
                 trans_[faceIdx] *= mult[faceIdx];
             }
-
+        }
         const Vector& transmissibility() const { return trans_  ;}
         const Vector& htrans()           const { return htrans_ ;}
         Vector&       transmissibility()       { return trans_  ;}
@@ -126,11 +126,11 @@ namespace Opm
 
 
     template <class GridType>
-    inline void DerivedGeology::multiplyHalfIntersections_(const GridType &grid,
-                                                           Opm::EclipseStateConstPtr eclState,
-                                                           const std::vector<double> &ntg,
-                                                           Vector &halfIntersectTransmissibility,
-                                                           std::vector<double> &intersectionTransMult)
+    inline void Trans::multiplyHalfIntersections_(const GridType &grid,
+                                                   Opm::EclipseStateConstPtr eclState,
+                                                   const std::vector<double> &ntg,
+                                                   Vector &halfIntersectTransmissibility,
+                                                   std::vector<double> &intersectionTransMult)
     {
         int numCells = Opm::AutoDiffGrid::numCells(grid);
 
@@ -215,9 +215,9 @@ namespace Opm
     }
 
     template <class GridType>
-    inline void DerivedGeology::tpfa_loc_trans_compute_(const GridType& grid,
-                                                        const double* perm,
-                                                        Vector& hTrans){
+    inline void Trans::tpfa_loc_trans_compute_(const GridType& grid,
+                                               const double* perm,
+                                               Vector& hTrans){
 
         // Using Local coordinate system for the transmissibility calculations
         // hTrans(cellFaceIdx) = K(cellNo,j) * sum( C(:,i) .* N(:,j), 2) / sum(C.*C, 2)
@@ -282,4 +282,4 @@ namespace Opm
 
 }
 
-#endif // OPM_GEOPROPS_HEADER_INCLUDED
+#endif // OPM_TRANS_HEADER_INCLUDED

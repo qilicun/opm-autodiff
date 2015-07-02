@@ -33,7 +33,7 @@
 #include <opm/autodiff/GridHelpers.hpp>
 
 #include <opm/autodiff/WellStateFullyImplicitBlackoil.hpp>
-
+#include <opm/autodiff/Trans.hpp>
 #include <string>
 #include <sstream>
 #include <iomanip>
@@ -62,8 +62,10 @@ namespace Opm
                                const int step,
                                const std::string& output_dir);
 
-    void outputTransMatlab(const Trans& trans,
-                           const std::string& output_dir)
+    void outputTransMatlab(const Opm::Trans& trans,
+                           const std::string& output_dir);
+    void outputHtransMatlab(const Opm::Trans& trans,
+                           const std::string& output_dir);
 
 #ifdef HAVE_DUNE_CORNERPOINT
     void outputStateVtk(const Dune::CpGrid& grid,

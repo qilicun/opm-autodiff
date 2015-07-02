@@ -76,6 +76,7 @@
 #include <opm/autodiff/WellStateFullyImplicitBlackoil.hpp>
 
 #include <opm/autodiff/SimulatorFullyImplicitBlackoil.hpp>
+#include <opm/autodiff/SimulatorFullyImplicitBlackoilOutput.hpp>
 #include <opm/autodiff/BlackoilPropsAdFromDeck.hpp>
 #include <opm/autodiff/RedistributeDataHandles.hpp>
 
@@ -332,7 +333,8 @@ try
 #else
     const bool use_local_perm = param.getDefault("use_local_perm", true);
 #endif
-
+    Trans trans(grid, new_props, eclipseState);
+    outputTransMatlab(trans, output_dir);
     DerivedGeology geoprops(grid, new_props, eclipseState, use_local_perm, grav);
     boost::any parallel_information;
 
