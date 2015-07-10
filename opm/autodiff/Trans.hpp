@@ -259,6 +259,9 @@ namespace Opm
 
         int numCells = Opm::AutoDiffGrid::numCells(grid);
         int numFaces = Opm::AutoDiffGrid::numFaces(grid);
+        tranx_ = Vector::Zero(numCells);
+        trany_ = Vector::Zero(numCells);
+        tranz_ = Vector::Zero(numCells);
         // allocate space
         const int *cartDims = AutoDiffGrid::cartDims(grid);
         const int nx = cartDims[0];
