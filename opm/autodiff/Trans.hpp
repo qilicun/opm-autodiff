@@ -25,7 +25,7 @@
 #include <opm/core/utility/ErrorMacros.hpp>
 #include <opm/core/pressure/tpfa/trans_tpfa.h>
 #include <opm/core/pressure/tpfa/TransTpfa.hpp>
-
+#include <opm/core/utility/Units.hpp>
 #include <opm/parser/eclipse/EclipseState/EclipseState.hpp>
 #include <opm/parser/eclipse/EclipseState/Grid/EclipseGrid.hpp>
 #include <opm/core/utility/platform_dependent/disable_warnings.h>
@@ -41,6 +41,7 @@
 #include <opm/core/utility/platform_dependent/reenable_warnings.h>
 
 #include <cstddef>
+#include <cmath>
 
 namespace Opm
 {
@@ -61,6 +62,9 @@ namespace Opm
               Opm::EclipseStateConstPtr eclState)
             : htrans_(AutoDiffGrid::numCellFaces(grid))
             , trans_(Opm::AutoDiffGrid::numFaces(grid))
+            , tranx_(Opm::AutoDiffGrid::numCells(grid))
+            , trany_(Opm::AutoDiffGrid::numCells(grid))
+            , tranz_(Opm::AutoDiffGrid::numCells(grid))
         {
             int numCells = AutoDiffGrid::numCells(grid);
             int numFaces = AutoDiffGrid::numFaces(grid);
@@ -102,12 +106,40 @@ namespace Opm
             for (int faceIdx = 0; faceIdx < numFaces; faceIdx++) {
                 trans_[faceIdx] *= mult[faceIdx];
             }
+            // Convert to metric unit.
+            const double factor = Opm::prefix::centi * Opm::unit::Poise
+            / Opm::unit::cubic(Opm::unit::meter)
+            / Opm::unit::day
+            / Opm::unit::barsa;
+            for (size_t  idx = 0; idx < trans_.size(); ++idx) {
+                trans_[idx] = unit::convert::to(trans_[idx], factor);
+                if (std::fabs(trans_[idx]) < 1e-10) {
+                    trans_[idx] = 0.0;
+                }
+            }
+            for (size_t  idx = 0; idx < htrans_.size(); ++idx) {
+                htrans_[idx] = unit::convert::to(htrans_[idx], factor);
+                if (std::fabs(htrans_[idx]) < 1e-10) {
+                    htrans_[idx] = 0.0;
+                }
+            }
+            std::cout << "Num Cells: " << Opm::AutoDiffGrid::numCells(grid) << std::endl;
+            std::cout << "Num Faces: " << Opm::AutoDiffGrid::numFaces(grid) << std::endl;
+            std::cout << "Num Cell Faces: " << AutoDiffGrid::numCellFaces(grid) << std::endl;
+            getCellTrans(grid, trans_);
+
         }
         const Vector& transmissibility() const { return trans_  ;}
         const Vector& htrans()           const { return htrans_ ;}
+        const Vector& tranx()            const { return tranx_; }
+        const Vector& trany()            const { return trany_; }
+        const Vector& tranz()            const { return tranz_; }
         Vector&       transmissibility()       { return trans_  ;}
         Vector&       htrans()                 { return htrans_ ;}
-
+        Vector& tranx()            { return tranx_; }
+        Vector& trany()            { return trany_; }
+        Vector& tranz()            { return tranz_; }
+  
     private:
         template <class Grid>
         void multiplyHalfIntersections_(const Grid &grid,
@@ -120,8 +152,15 @@ namespace Opm
         void tpfa_loc_trans_compute_(const Grid &grid,
                                      const double* perm,
                                      Vector &hTrans);
+
+        template <class Grid>
+        void getCellTrans(const Grid& grid, const Vector& trans);
+
         Vector trans_;
         Vector htrans_;
+        Vector tranx_;
+        Vector trany_;
+        Vector tranz_;
     };
 
 
@@ -213,6 +252,82 @@ namespace Opm
             }
         }
     }
+
+    template <class GridType>
+    inline void Trans::getCellTrans(const GridType& grid, const Vector& faceTrans)
+    {
+
+        int numCells = Opm::AutoDiffGrid::numCells(grid);
+        int numFaces = Opm::AutoDiffGrid::numFaces(grid);
+        // allocate space
+        const int *cartDims = AutoDiffGrid::cartDims(grid);
+        const int nx = cartDims[0];
+        const int ny = cartDims[1];
+        const int nz = cartDims[2];
+        auto faceCells  = Opm::AutoDiffGrid::faceCells(grid);
+        auto globalCell = Opm::AutoDiffGrid::globalCell(grid);
+        // fill the arrays
+        for (int faceIdx = 0; faceIdx < numFaces; ++faceIdx) {
+            // calculate the logically Cartesian IJK position of the inside and outside
+            // cells of the face
+ 
+            //int insideCellIdx = Opm::AutoDiffGrid::faceCells(grid)face_cells[2*faceIdx + 0];
+            //int outsideCellIdx = grid.face_cells[2*faceIdx + 1];
+            const int insideCellIdx  = faceCells(faceIdx, 0);
+            const int outsideCellIdx = faceCells(faceIdx, 1);
+
+            if (insideCellIdx < 0 || outsideCellIdx < 0)
+                continue; // ignore boundary faces
+
+            int cartesianInsideCellIdx =  globalCell[insideCellIdx];
+            int cartesianOutsideCellIdx =  globalCell[outsideCellIdx];
+
+            int iIn = cartesianInsideCellIdx%nx;
+            int jIn = cartesianInsideCellIdx/nx % ny;
+            int kIn = cartesianInsideCellIdx/(nx*ny);
+
+            int iOut = cartesianOutsideCellIdx%nx;
+            int jOut = cartesianOutsideCellIdx/nx % ny;
+            int kOut = cartesianOutsideCellIdx/(nx*ny);
+
+            bool isNNC = true;
+            // try to detect "ordinary" neighbors. This is the case if
+            // the logically Cartesian indices of the cell differ only
+            // by one in a single direction. The depth axis is special
+            // as cells can be skipped (e.g. due to pinchouts) and the
+            // direction seems to be reverse...
+            if (jIn == jOut && kIn == kOut) {
+                if (iIn + 1 == iOut) {
+                    isNNC=false;
+                    tranx_[insideCellIdx] = faceTrans[faceIdx];
+                }
+                else if (iOut + 1 == iIn) {
+                    isNNC=false;
+                    tranx_[outsideCellIdx] = faceTrans[faceIdx];
+                }
+            }
+            else if (iIn == iOut && kIn == kOut) {
+                if (jIn + 1 == jOut) {
+                    isNNC=false;
+                    trany_[insideCellIdx] = faceTrans[faceIdx];
+                }
+                else if (jOut + 1 == jIn) {
+                    isNNC=false;
+                    trany_[outsideCellIdx] = faceTrans[faceIdx];
+                }
+            }
+            else if (iIn == iOut && jIn == jOut) {
+                isNNC=false;
+                if (kIn < kOut) {
+                    tranz_[insideCellIdx] = faceTrans[faceIdx];
+                }
+                else {
+                    tranz_[outsideCellIdx] = faceTrans[faceIdx];
+                }
+            }
+        }
+    }
+
 
     template <class GridType>
     inline void Trans::tpfa_loc_trans_compute_(const GridType& grid,

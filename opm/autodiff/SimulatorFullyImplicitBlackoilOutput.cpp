@@ -45,7 +45,7 @@
 namespace Opm
 {
 
-
+    //typedef Eigen::ArrayXd Vector;
     void outputStateVtk(const UnstructuredGrid& grid,
                         const SimulatorState& state,
                         const int step,
@@ -169,13 +169,42 @@ namespace Opm
        catch (...) {
            OPM_THROW(std::runtime_error,"Creating directories failed: " << fpath);
        }
-       fname << "/" << std::setw(3) << std::setfill('0') << ".txt";
+       fname << "/" << std::setw(3) << std::setfill('0') << "000.txt";
        std::ofstream file(fname.str().c_str());
        if (!file) {
            OPM_THROW(std::runtime_error,"Failed to open " << fname.str());
        }
        file.precision(15);
        std::copy(&trans.transmissibility()[0],&trans.transmissibility()[0]+trans.transmissibility().size(), std::ostream_iterator<double>(file, "\n"));
+    }
+
+    void outputCellTrans(const Trans& trans,
+                         const std::string& output_dir)
+    {
+        // Write data (not grid) in Matlab format
+       std::ostringstream fname;
+       fname << output_dir << "/" << "cellTrans";
+       boost::filesystem::path fpath = fname.str();
+       try {
+           create_directories(fpath);
+       }
+       catch (...) {
+           OPM_THROW(std::runtime_error,"Creating directories failed: " << fpath);
+       }
+       fname << "/" << std::setw(3) << std::setfill('0') << "000.txt";
+       std::ofstream file(fname.str().c_str());
+       if (!file) {
+           OPM_THROW(std::runtime_error,"Failed to open " << fname.str());
+       }
+       file.precision(15);
+       // output tranx.
+       //std::copy(&trans.tranx()[0],&trans.tranx()[0]+trans.tranx().size(), std::ostream_iterator<double>(file, "\n"));
+       file << "TRANX\n";
+       std::copy(&trans.tranx()[0],&trans.tranx()[0]+trans.tranx().size(), std::ostream_iterator<double>(file, "\n"));
+       file << "TRANY\n";
+       std::copy(&trans.trany()[0],&trans.trany()[0]+trans.trany().size(), std::ostream_iterator<double>(file, "\n"));
+       file << "TRANZ\n";
+       std::copy(&trans.tranz()[0],&trans.tranz()[0]+trans.tranz().size(), std::ostream_iterator<double>(file, "\n"));
     }
 
     void outputHtransMatlab(const Trans& trans,
@@ -191,7 +220,7 @@ namespace Opm
        catch (...) {
            OPM_THROW(std::runtime_error,"Creating directories failed: " << fpath);
        }
-       fname << "/" << std::setw(3) << std::setfill('0') << ".txt";
+       fname << "/" << std::setw(3) << std::setfill('0') << "000.txt";
        std::ofstream file(fname.str().c_str());
        if (!file) {
            OPM_THROW(std::runtime_error,"Failed to open " << fname.str());

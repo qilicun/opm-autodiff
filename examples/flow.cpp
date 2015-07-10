@@ -334,8 +334,13 @@ try
     const bool use_local_perm = param.getDefault("use_local_perm", true);
 #endif
     Trans trans(grid, new_props, eclipseState);
+    //std::cout << "output trans to: "  << output_dir << std::endl;
     outputTransMatlab(trans, output_dir);
+    outputHtransMatlab(trans, output_dir);
+    outputCellTrans(trans, output_dir);
+    exit(1);
     DerivedGeology geoprops(grid, new_props, eclipseState, use_local_perm, grav);
+
     boost::any parallel_information;
 
     // At this point all properties and state variables are correctly initialized

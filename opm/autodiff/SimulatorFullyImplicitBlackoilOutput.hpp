@@ -38,7 +38,7 @@
 #include <sstream>
 #include <iomanip>
 #include <fstream>
-
+#include <Eigen/Eigen>
 #include <boost/filesystem.hpp>
 
 #ifdef HAVE_DUNE_CORNERPOINT
@@ -47,6 +47,7 @@
 namespace Opm
 {
 
+    
     void outputStateVtk(const UnstructuredGrid& grid,
                         const Opm::SimulatorState& state,
                         const int step,
@@ -62,10 +63,13 @@ namespace Opm
                                const int step,
                                const std::string& output_dir);
 
+
     void outputTransMatlab(const Opm::Trans& trans,
                            const std::string& output_dir);
     void outputHtransMatlab(const Opm::Trans& trans,
                            const std::string& output_dir);
+    void outputCellTrans(const Opm::Trans& trans,
+                         const std::string& output_dir);
 
 #ifdef HAVE_DUNE_CORNERPOINT
     void outputStateVtk(const Dune::CpGrid& grid,
