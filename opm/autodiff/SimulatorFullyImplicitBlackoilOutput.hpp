@@ -70,6 +70,9 @@ namespace Opm
                            const std::string& output_dir);
     void outputCellTrans(const Opm::Trans& trans,
                          const std::string& output_dir);
+    //template<class Grid>
+    void outputGridInfoMatlab(const UnstructuredGrid& grid,
+                              const std::string& output_dir);
 
 #ifdef HAVE_DUNE_CORNERPOINT
     void outputStateVtk(const Dune::CpGrid& grid,

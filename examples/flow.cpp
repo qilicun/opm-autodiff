@@ -338,6 +338,7 @@ try
     outputTransMatlab(trans, output_dir);
     outputHtransMatlab(trans, output_dir);
     outputCellTrans(trans, output_dir);
+    outputGridInfoMatlab(grid, output_dir);
     exit(1);
     DerivedGeology geoprops(grid, new_props, eclipseState, use_local_perm, grav);
 

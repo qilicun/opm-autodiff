@@ -207,6 +207,8 @@ namespace Opm
        std::copy(&trans.tranz()[0],&trans.tranz()[0]+trans.tranz().size(), std::ostream_iterator<double>(file, "\n"));
     }
 
+
+
     void outputHtransMatlab(const Trans& trans,
                            const std::string& output_dir)
     {
@@ -230,6 +232,94 @@ namespace Opm
     }
 
 
+
+
+
+    void outputGridInfoMatlab(const UnstructuredGrid& grid,
+                              const std::string& output_dir)
+    {
+        typedef std::map<std::string, std::vector<int>* > DataMap;
+        DataMap dm;
+        std::vector<int> cell_facepos;
+        cell_facepos.assign(grid.cell_facepos, grid.cell_facepos+grid.number_of_cells+1);
+        std::vector<int> cell_faces;
+        cell_faces.assign(grid.cell_faces, grid.cell_faces+grid.cell_facepos[grid.number_of_cells]);
+        std::vector<int> face_cells;
+        face_cells.assign(grid.face_cells, grid.face_cells+grid.number_of_faces);
+        std::vector<int> global_cell;
+        global_cell.assign(grid.global_cell, grid.global_cell+grid.number_of_cells);
+        dm["cell_facepos"] = &cell_facepos;
+        dm["cell_faces"] = &cell_faces;
+        dm["face_cells"] = &face_cells;
+        dm["global_cell"] = &global_cell;
+
+        // Write data (not grid) in Matlab format
+        for (DataMap::const_iterator it = dm.begin(); it != dm.end(); ++it) {
+            std::ostringstream fname;
+            fname << output_dir << "/grid";
+            boost::filesystem::path fpath = fname.str();
+            try {
+                create_directories(fpath);
+            }
+            catch (...) {
+                OPM_THROW(std::runtime_error,"Creating directories failed: " << fpath);
+            }
+            fname << "/" << std::setw(3) << std::setfill('0') << it->first << ".inc";
+            std::ofstream file(fname.str().c_str());
+            if (!file) {
+                OPM_THROW(std::runtime_error,"Failed to open " << fname.str());
+            }
+            file.precision(15);
+            const std::vector<int>& d = *(it->second);
+            std::copy(d.begin(), d.end(), std::ostream_iterator<int>(file, "\n"));
+        }
+    }
+
+
+//    //    template <class Grid >
+//    void outputGridInfoMatlab(const UnstructuredGrid& grid,
+//                              const std::string& output_dir)
+//    {
+//        Opm::DataMap dm;
+//        dm["cell_facepos"] = &state.saturation();
+//        dm["pressure"] = &state.pressure();
+//        dm["surfvolume"] = &state.surfacevol();
+//        dm["rs"] = &state.gasoilratio();
+//        dm["rv"] = &state.rv();
+//        //using Opm::AutoDiffGrid;
+//        // Write data (not grid) in Matlab format
+//        for (i = 0; i < 4; ++i) {
+//       std::ostringstream fname;
+//       fname << output_dir << "/" << "grid";
+//       boost::filesystem::path fpath = fname.str();
+//       try {
+//           create_directories(fpath);
+//       }
+//       catch (...) {
+//           OPM_THROW(std::runtime_error,"Creating directories failed: " << fpath);
+//       }
+//       fname << "/" << std::setw(3) << std::setfill('0') << "cell_facepos.inc";
+//       std::ofstream file1(fname.str().c_str());
+//       fname << "/" << std::setw(3) << std::setfill('0') << "cell_faces.inc";
+//       std::ofstream file2(fname.str().c_str());
+//       fname << "/" << std::setw(3) << std::setfill('0') << "face_cells.inc";
+//       std::ofstream file3(fname.str().c_str());
+//       fname << "/" << std::setw(3) << std::setfill('0') << "global_cells.inc";
+//       std::ofstream file4(fname.str().c_str());
+//       if (!file1 | !file2 | !file3 | !file4) {
+//           OPM_THROW(std::runtime_error,"Failed to open " << fname.str());
+//       }
+//       file1.precision(15);
+//       file2.precision(15);
+//       file3.precision(15);
+//       file4.precision(15);
+//       std::copy(&grid.cell_facepos[0],&grid.cell_facepos[0]+grid.number_of_cells+1, std::ostream_iterator<double>(file1, "\n"));
+//       std::copy(&grid.cell_faces[0], &grid.cell_faces[0]+grid.cell_facepos[grid.number_of_cells], std::ostream_iterator<double>(file2, "\n"));
+//       std::copy(&grid.face_cells[0], &grid.face_cells[0]+2*grid.number_of_faces, std::ostream_iterator<double>(file3, "\n"));
+//       std::copy(&grid.global_cell[0], &grid.global_cell[0]+grid.number_of_cells, std::ostream_iterator<double>(file4, "\n"));
+//        }
+//    }
+//
 
 #if 0
     void outputWaterCut(const Opm::Watercut& watercut,
