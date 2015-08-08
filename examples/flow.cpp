@@ -87,6 +87,7 @@
 #include <opm/parser/eclipse/OpmLog/CounterLog.hpp>
 #include <opm/parser/eclipse/Deck/Deck.hpp>
 #include <opm/parser/eclipse/Parser/Parser.hpp>
+#include <opm/parser/eclipse/Parser/ParseMode.hpp>
 #include <opm/parser/eclipse/EclipseState/checkDeck.hpp>
 #include <opm/parser/eclipse/EclipseState/EclipseState.hpp>
 
@@ -213,12 +214,14 @@ try
         Opm::OpmLog::addBackend( "COUNTER" , counterLog );
     }
 
+    Opm::ParseMode parseMode;
     Opm::DeckConstPtr deck;
     std::shared_ptr<EclipseState> eclipseState;
+    parseMode.randomSlash = InputError::IGNORE;
     try {
-        deck = parser->parseFile(deck_filename);
+        deck = parser->parseFile(deck_filename, parseMode);
         Opm::checkDeck(deck);
-        eclipseState.reset(new Opm::EclipseState(deck));
+        eclipseState.reset(new Opm::EclipseState(deck , parseMode));
     }
     catch (const std::invalid_argument& e) {
         std::cerr << "Failed to create valid ECLIPSESTATE object. See logfile: " << logFile << std::endl;
@@ -324,13 +327,6 @@ try
     bool use_gravity = (gravity[0] != 0.0 || gravity[1] != 0.0 || gravity[2] != 0.0);
     const double *grav = use_gravity ? &gravity[0] : 0;
 
-#if USE_DUNE_CORNERPOINTGRID
-    if(output_cout)
-    {
-        std::cout << std::endl << "Warning: use of local perm is not yet implemented for CpGrid!" << std::endl << std::endl;
-    }
-    const bool use_local_perm = false;
-#else
     const bool use_local_perm = param.getDefault("use_local_perm", true);
 #endif
     Trans trans(grid, new_props, eclipseState);
@@ -340,6 +336,7 @@ try
     outputCellTrans(trans, output_dir);
     outputGridInfoMatlab(grid, output_dir);
     exit(1);
+
     DerivedGeology geoprops(grid, new_props, eclipseState, use_local_perm, grav);
 
     boost::any parallel_information;
@@ -363,9 +360,9 @@ try
     // Solver for Newton iterations.
     std::unique_ptr<NewtonIterationBlackoilInterface> fis_solver;
     if (param.getDefault("use_interleaved", false)) {
-        fis_solver.reset(new NewtonIterationBlackoilInterleaved(param));
+        fis_solver.reset(new NewtonIterationBlackoilInterleaved(param, parallel_information));
     } else if (param.getDefault("use_cpr", true)) {
-        fis_solver.reset(new NewtonIterationBlackoilCPR(param));
+        fis_solver.reset(new NewtonIterationBlackoilCPR(param, parallel_information));
     } else {
         fis_solver.reset(new NewtonIterationBlackoilSimple(param, parallel_information));
     }

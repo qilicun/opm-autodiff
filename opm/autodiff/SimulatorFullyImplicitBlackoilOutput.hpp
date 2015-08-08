@@ -146,7 +146,8 @@ namespace Opm
         /** \copydoc Opm::OutputWriter::writeTimeStep */
         void writeTimeStep(const SimulatorTimerInterface& timer,
                            const SimulatorState& state,
-                           const WellState& )
+                           const WellState&,
+                           bool substep = false)
         {
             outputStateVtk(grid_, state, timer.currentStepNum(), outputDir_);
         }
@@ -175,7 +176,8 @@ namespace Opm
         /** \copydoc Opm::OutputWriter::writeTimeStep */
         void writeTimeStep(const SimulatorTimerInterface& timer,
                            const SimulatorState& reservoirState,
-                           const WellState& wellState)
+                           const WellState& wellState,
+                           bool substep = false)
         {
             const BlackoilState* state =
                 dynamic_cast< const BlackoilState* > (&reservoirState);
@@ -209,7 +211,8 @@ namespace Opm
         /** \copydoc Opm::OutputWriter::writeTimeStep */
         void writeTimeStep(const SimulatorTimerInterface& timer,
                            const SimulatorState& reservoirState,
-                           const WellState& wellState);
+                           const WellState& wellState,
+                           bool substep = false);
 
         /** \brief return output directory */
         const std::string& outputDirectory() const { return outputDir_; }
