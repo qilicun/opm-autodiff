@@ -244,6 +244,8 @@ namespace Opm
         cell_facepos.assign(grid.cell_facepos, grid.cell_facepos+grid.number_of_cells+1);
         std::vector<int> cell_faces;
         cell_faces.assign(grid.cell_faces, grid.cell_faces+grid.cell_facepos[grid.number_of_cells]);
+        std::vector<int> cell_facetag;
+        cell_facetag.assign(grid.cell_facetag, grid.cell_facetag+grid.cell_facepos[grid.number_of_cells]);
         std::vector<int> face_cells;
         face_cells.assign(grid.face_cells, grid.face_cells+grid.number_of_faces);
         std::vector<int> global_cell;
@@ -252,7 +254,7 @@ namespace Opm
         dm["cell_faces"] = &cell_faces;
         dm["face_cells"] = &face_cells;
         dm["global_cell"] = &global_cell;
-
+	dm["cell_facetag"] = &cell_facetag;
         // Write data (not grid) in Matlab format
         for (DataMap::const_iterator it = dm.begin(); it != dm.end(); ++it) {
             std::ostringstream fname;

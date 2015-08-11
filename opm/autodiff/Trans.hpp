@@ -266,7 +266,7 @@ namespace Opm
         const int *cartDims = AutoDiffGrid::cartDims(grid);
         const int nx = cartDims[0];
         const int ny = cartDims[1];
-        const int nz = cartDims[2];
+        //const int nz = cartDims[2];
         auto faceCells  = Opm::AutoDiffGrid::faceCells(grid);
         auto globalCell = Opm::AutoDiffGrid::globalCell(grid);
         // fill the arrays
