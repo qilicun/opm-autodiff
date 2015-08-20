@@ -25,6 +25,7 @@
 #include <opm/core/utility/ErrorMacros.hpp>
 //#include <opm/core/pressure/tpfa/trans_tpfa.h>
 #include <opm/core/pressure/tpfa/TransTpfa.hpp>
+#include <opm/core/grid/PinchProcessor.hpp>
 
 #include <opm/parser/eclipse/EclipseState/EclipseState.hpp>
 #include <opm/parser/eclipse/EclipseState/Grid/EclipseGrid.hpp>
@@ -97,6 +98,7 @@ namespace Opm
             // Pore volume.
             // New keywords MINPVF will add some PV due to OPM cpgrid process algorithm.
             // But the default behavior is to get the comparable pore volume with ECLIPSE.
+            std::vector<double> pv(numCartesianCells, 0.0);
             for (int cellIdx = 0; cellIdx < numCells; ++cellIdx) {
                 int cartesianCellIdx = AutoDiffGrid::globalCell(grid)[cellIdx];
                 pvol_[cellIdx] =
@@ -108,6 +110,7 @@ namespace Opm
                 } else {
                     pvol_[cellIdx] *= eclgrid->getCellVolume(cartesianCellIdx);
                 }
+                pv[cartesianCellIdx] = pvol_[cellIdx];
             }
             // Use volume weighted arithmetic average of the NTG values for
             // the cells effected by the current OPM cpgrid process algorithm
@@ -128,7 +131,18 @@ namespace Opm
                 tpfa_loc_trans_compute_(grid,props.permeability(),htrans);
             }
 
+            // test Pinchprocessor;
+
+            double minpv = 300.;
+            std::string mode = "TOPBOT";
+            PinchProcessor<Grid> pinch(minpv, mode);
+            std::vector<int> actnum;
+            eclgrid->exportACTNUM(actnum);
+            std::vector<double> hhtrans(AutoDiffGrid::numCellFaces(grid));
+            tpfa_htrans_compute(ug, props.permeability(), hhtrans.data());
+            pinch.process(grid, hhtrans, actnum, pv);
             std::vector<double> mult;
+
             multiplyHalfIntersections_(grid, eclState, ntg, htrans, mult);
 
             // combine the half-face transmissibilites into the final face
@@ -199,6 +213,9 @@ namespace Opm
                              Opm::EclipseStateConstPtr eclState,
                              std::vector<double> &ntg);
 
+        template <class Grid>
+        void testPinch_(const Grid& grid,
+                        Opm::EclipseStateConstPtr eclState);
         Vector pvol_ ;
         Vector trans_;
         Vector gpot_ ;
@@ -417,6 +434,9 @@ namespace Opm
         }
 
     }
+
+
+
 
 }
 
