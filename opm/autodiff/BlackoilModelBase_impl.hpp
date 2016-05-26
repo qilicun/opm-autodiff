@@ -331,10 +331,33 @@ namespace detail {
     void
     BlackoilModelBase<Grid, WellModel, Implementation>::
     afterStep(const double /* dt */,
-              ReservoirState& /* reservoir_state */,
+              ReservoirState& reservoir_state,
               WellState& /* well_state */)
     {
         // Does nothing in this model.
+        // Compute oil in place.
+        using namespace Opm::AutoDiffGrid;
+        const int np = fluid_.numPhases();
+        const int nc = numCells(grid_);
+        const Opm::PhaseUsage& pu = fluid_.phaseUsage();
+        const DataBlock s = Eigen::Map<const DataBlock>(& reservoir_state.saturation()[0], nc, np);
+        const int pos = pu.phase_pos[Oil];
+        const V& so = s.col(pos);
+        const V& sw = s.col(pu.phase_pos[Water]);
+        const V& sg = s.col(pu.phase_pos[Gas]);
+        const V& porv = geo_.poreVolume();
+        int foipo = 0;
+        int foipw = 0;
+        int foipg = 0;
+        for (int c = 0; c < nc; ++c) {
+            foipo += porv[c] * so[c];
+            foipw += porv[c] * sw[c];
+            foipg += porv[c] * sg[c];
+        }
+        OpmLog::info("----------------------------------------------------");
+        OpmLog::info("------------Oil-----------Water-----------Gas");
+        OpmLog::info("FOIP:    " + std::to_string(foipo) + "      " + std::to_string(foipw) + "      " + std::to_string(foipg));
+        OpmLog::info("----------------------------------------------------");
     }
 
 
